@@ -1,4 +1,5 @@
 streamlit==0.61.0
 numpy
+tqdm
 pillow==7.2.0	
 pandas
