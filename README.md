@@ -23,13 +23,12 @@ Requirements are:
 streamlit==0.61.0
 numpy==1.16.5
 pillow==7.2.0
-streamlit_drawable_canvas
 smtplib
 ssl
 pandas
 ```
 
-Alternatively run for the dependencies:
+Alternatively run for installing the dependencies:
 
 
 ```bash
