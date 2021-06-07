@@ -11,7 +11,7 @@ It also sends emails automatically to the recipients of the certificate.
 
 Short demo of how it works:
 
-<img src="demo_app.gif" width="750" height="380"/>
+<img src="demo_app.gif" width="750" height="350"/>
 
 ### Local use
 
