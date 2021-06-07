@@ -1,11 +1,11 @@
 body {
   color: rgb(0, 0, 0);
-  background-color: rgb(160, 160, 160);
+  background-color: #fdeaab;
 }
 
 .stButton > button {
   color: #000000;
-  border-radius: 50%;
+  border-radius: 12%;
   height: 3em;
   width: 3em;
 }
