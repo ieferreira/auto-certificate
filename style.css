@@ -13,3 +13,11 @@ body {
 .stTextInput > div > div > input {
   color: #ffffff;
 }
+
+input {
+  color: black;
+}
+
+table {
+  color: white;
+}
