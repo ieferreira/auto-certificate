@@ -1,23 +1,4 @@
 body {
-  color: rgb(255, 255, 255);
-  background-color: #000000;
-}
-
-.stButton > button {
-  color: #09ae00;
-  border-radius: 12%;
-  height: 5em;
-  width: 5em;
-}
-
-.stTextInput > div > div > input {
-  color: #ffffff;
-}
-
-input {
-  color: black;
-}
-
-table {
-  color: white;
+  color: rgb(121, 0, 0);
+  background-color: #fff0c0;
 }
