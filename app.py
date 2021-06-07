@@ -18,6 +18,15 @@ import streamlit as st
 clean_folder()
 clean_folder("responses/*")
 
+
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("style.css")
+
+
+
 st.title("Aplicación Correos y Certificados")
 file = st.file_uploader("", type=["jpg"])
 
@@ -49,16 +58,11 @@ if file:
         img2 = import_image("responses/test.jpg")
         imageLocation.image(img2)
 
-    # TODO Generar consolidado
-
-    # ? Leer a partir de  consolidado ya hecho
     file_asis = st.file_uploader(label="archivo", type="xlsx")
 
     if file_asis:
 
         df = pd.read_excel(file_asis, engine='openpyxl')
-        # print(type(df))
-        # st.table(df)
         certs_generated = False
         st.table(df)
         if st.checkbox("Generar Certificados"):
@@ -66,11 +70,6 @@ if file:
                                       (name_pt1, name_pt2), (dni_pt1, dni_pt2), df)
             certs_generated = True
 
-    # #! for i in tqdm(range(len(ls_names))):
-    # for i in range(3):
-    #     image_editable = ImageDraw.Draw(img)
-    #     make_cert(img, str(ls_names[i]), str(
-    #         ls_dni[i]), name_pt1, name_pt2, dni_pt1, dni_pt2)
         if certs_generated:
             st.write("Los certificados se enviarán a los siguientes correos: ")
             st.write(ls_mails)
