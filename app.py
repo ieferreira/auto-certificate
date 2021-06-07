@@ -58,11 +58,11 @@ if file:
         img2 = import_image("responses/test.jpg")
         imageLocation.image(img2)
 
-    st.title(os.listdir())
+
     try:
         os.mkdir("certificados")
     except:
-        st.write("folder 'certificados' exists!")
+        pass
 
     file_asis = st.file_uploader(label="archivo", type="xlsx")
 
@@ -80,7 +80,7 @@ if file:
             st.write("Los certificados se enviarán a los siguientes correos: ")
             st.write(ls_mails)
             user_input = st.text_input(
-                "Correo", "ieferreirac@unal.edu.co")
+                "Correo", "@unal.edu.co")
             pword = st.text_input(
                 "Type your password and press enter:", type="password")
 
