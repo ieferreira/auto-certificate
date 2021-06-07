@@ -3,4 +3,4 @@ numpy
 tqdm
 pillow==7.2.0	
 pandas
-xlrd
+openpyxl

@@ -56,7 +56,7 @@ if file:
 
     if file_asis:
 
-        df = pd.read_excel(file_asis)
+        df = pd.read_excel(file_asis, engine='openpyxl')
         # print(type(df))
         # st.table(df)
         certs_generated = False
