@@ -1,7 +1,7 @@
 streamlit==0.61.0
-opencv-contrib-python
 numpy==1.16.5
 pillow==7.2.0
-scikit-image
-scipy
 streamlit_drawable_canvas
+smtplib
+ssl
+pandas
