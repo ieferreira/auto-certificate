@@ -23,12 +23,12 @@ Using streamlit as frontend, clone the repo and run it with the following comman
 Requirements are:
 
 ```bash
-streamlit==0.61.0
-numpy==1.16.5
-pillow==7.2.0
-smtplib
-ssl
+numpy
+tqdm
 pandas
+openpyxl
+pillow==7.2.0
+streamlit==0.61.0
 ```
 
 Alternatively run for installing the dependencies:
