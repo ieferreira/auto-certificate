@@ -58,6 +58,12 @@ if file:
         img2 = import_image("responses/test.jpg")
         imageLocation.image(img2)
 
+    st.title(os.listdir())
+    try:
+        os.mkdir("certificados")
+    except:
+        st.write("folder 'certificados' exists!")
+
     file_asis = st.file_uploader(label="archivo", type="xlsx")
 
     if file_asis:
