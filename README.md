@@ -1,17 +1,20 @@
 ## Automatic Certificate generator and email Sender
 
+An Automatic generator of certificates for my local university SEG Student Chapter, it generates a certificate with name and DNI given in an excel (test_prueba.xlsx is an example of the format that it uses, names and DNIs are fake or mine).
 
-An Automatic generator of certificates for my local university SEG Student Chapter, it generates a certificate with name and DNI given in an excel (test_prueba.xlsx is an example of the format that it uses, names and DNIs are fake or mine). 
-
-
-It also sends emails automatically to the recipients of the certificate. 
-
+It also sends emails automatically to the recipients of the certificate.
 
 ### Demo
 
 Short demo of how it works:
 
 <img src="demo_app.gif" width="750" height="350"/>
+
+### Heroku deployed app
+
+If you want to see an online version of the app please go to:
+
+[a link](https://auto-certificate.herokuapp.com/)
 
 ### Local use
 
@@ -29,7 +32,6 @@ pandas
 ```
 
 Alternatively run for installing the dependencies:
-
 
 ```bash
 pip install -r requirements.txt
