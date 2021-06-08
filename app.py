@@ -19,15 +19,9 @@ clean_folder()
 clean_folder("responses/*")
 
 
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+TITLE = "Aplicación Correos y Certificados"
 
-local_css("style.css")
-
-
-
-st.title("Aplicación Correos y Certificados")
+st.title(TITLE.title())
 file = st.file_uploader("", type=["jpg"])
 
 if file is None:
@@ -70,7 +64,7 @@ if file:
     except:
         pass
 
-    file_asis = st.file_uploader(label="archivo", type="xlsx")
+    file_asis = st.file_uploader(label="", type="xlsx")
 
     if file_asis:
 
