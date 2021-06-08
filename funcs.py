@@ -4,6 +4,7 @@ from tqdm import tqdm
 import numpy as np
 import os
 import glob
+from stqdm import stqdm
 
 
 def make_cert(file, text: str, dni: str, fname: str, ptn1: int = 100, ptn2: int = 100, ptd1: int = 100, ptd2: int = 200, folder="certificados", font="alegreya.ttf"):

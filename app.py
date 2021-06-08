@@ -13,7 +13,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import streamlit as st
-
+from stqdm import stqdm
 
 clean_folder()
 clean_folder("responses/*")
@@ -37,8 +37,9 @@ if file:
     imageLocation = st.empty()
 
     img = import_image(file)
+    width, height = img.size
     img_cert = img.copy()
-    imageLocation.image(img)
+    imageLocation.image(img, use_column_width=True)
 
     st.sidebar.title("Puntos y parámetros")
 
@@ -93,20 +94,20 @@ if file:
                 password = pword
 
                 try:
-                    for num, i in tqdm(enumerate(receiver_email)):
+                    for i in stqdm(range(len(receiver_email))):
                         # Create a multipart message and set headers
                         message = MIMEMultipart()
                         message["From"] = sender_email
-                        message["To"] = i
+                        message["To"] = receiver_email[i]
                         message["Subject"] = subject
-                        message["Bcc"] = i  # Recommended for mass emails
+                        message["Bcc"] = receiver_email[i]  # Recommended for mass emails
 
                         # Add body to email
                         message.attach(MIMEText(body, "plain"))
 
                         # In same directory as script
                         filename = "certificados/" + \
-                            f"{ls_mails[num].split('@')[0]}-certificado.pdf"
+                            f"{ls_mails[i].split('@')[0]}-certificado.pdf"
 
                         # Open PDF file in binary mode
                         with open(filename, "rb") as attachment:
@@ -130,16 +131,21 @@ if file:
                         #! IMPORTANT ENABLE LESS SECURE APPS
                         # Log in to server using secure context and send email
                         context = ssl.create_default_context()
+
                         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
                             server.login(sender_email, password)
-                            server.sendmail(sender_email, i, text)
+                            server.sendmail(sender_email, receiver_email[i], text)
 
+                    st.write(f"Correos enviados a {len(receiver_email)} personas")
                 except Exception as e:
 
                     st.write(
                         "Tienes que habilitar las apps menos seguras para este procedimiento")
                     st.write(
                         "En: https://www.google.com/settings/security/lesssecureapps")
+                    st.write(
+                        "Si no te aparece esta opción en seguridad, deshabilita verificación en 2 pasos para realizar este proceso."
+                    )
                     st.write(
                         "Por seguridad vuelve a deshabilitar esta opción cuando termines este proceso")
                     st.write(e)
