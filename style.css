@@ -4,10 +4,13 @@ body {
 }
 
 .stButton > button {
-  color: #383838;
-  border-radius: 50%;
-  height: 3em;
-  width: 3em;
+  color: #18d23f;
+  height: 10em;
+  width: 10em;
+}
+
+table {
+  color: rgb(228, 160, 82);
 }
 
 .stTextInput > div > div > input {
