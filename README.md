@@ -14,7 +14,7 @@ Short demo of how it works:
 
 If you want to see an online version of the app please go to:
 
-[ttps://auto-certificate.herokuapp.com/k](https://auto-certificate.herokuapp.com/)
+#### [https://auto-certificate.herokuapp.com](https://auto-certificate.herokuapp.com/)
 
 ### Local use
 
