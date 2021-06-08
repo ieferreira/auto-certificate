@@ -5,5 +5,4 @@ email = \"iveferreirach@unal.edu.co\"
 echo "[server]
 headless = true
 port = $PORT
-enableCORS = false
-" > ~/.streamlit/config.toml
+enableCORS = true" >> ~/.streamlit/config.toml
