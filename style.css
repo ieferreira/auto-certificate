@@ -5,12 +5,8 @@ body {
 
 .stButton > button {
   color: #18d23f;
-  height: 10em;
+  height: 2em;
   width: 10em;
-}
-
-table {
-  color: rgb(228, 160, 82);
 }
 
 .stTextInput > div > div > input {
