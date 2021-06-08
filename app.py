@@ -34,7 +34,12 @@ if file is None:
     st.text("Por favor, sube una imagen...")
 
 if file:
-    imageLocation = st.empty()
+    
+    try:
+        os.mkdir("responses")
+    except:
+        pass
+    imageLocation = st.empty(use_column_width=True)
 
     img = import_image(file)
     width, height = img.size
