@@ -39,7 +39,7 @@ if file:
         os.mkdir("responses")
     except:
         pass
-    imageLocation = st.empty(use_column_width=True)
+    imageLocation = st.empty()
 
     img = import_image(file)
     width, height = img.size
@@ -62,7 +62,7 @@ if file:
         make_test(img, test_img, ptn1=name_pt1,
                   ptn2=name_pt2, ptd1=dni_pt1, ptd2=dni_pt2)
         img2 = import_image("responses/test.jpg")
-        imageLocation.image(img2)
+        imageLocation.image(img2,  use_column_width=True)
 
 
     try:
