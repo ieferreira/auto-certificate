@@ -19,6 +19,13 @@ clean_folder()
 clean_folder("responses/*")
 
 
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("style.css")
+
+
 TITLE = "Aplicación Correos y Certificados"
 
 st.title(TITLE.title())
