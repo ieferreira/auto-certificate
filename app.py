@@ -260,3 +260,30 @@ if file:
                     st.write(
                         "Por seguridad vuelve a deshabilitar esta opción cuando termines este proceso")
                     st.write(e)
+
+
+blank, foot1, foot2, foot3= st.beta_columns((6,2,3,3))
+
+st.text("")
+st.text("")
+
+st.write("\n")
+
+st.markdown("""<br/>
+               <br/>""",
+    unsafe_allow_html=True)
+
+
+foot1.markdown(
+    f'<img src="https://avatars.githubusercontent.com/u/11964547?s=400&u=f6511da902a4d3374b9c46bf5c1d30642cd48b00&v=4"  width="75" height="75" alt="Me">',
+    unsafe_allow_html=True,
+)
+
+foot2.markdown("""Programado por: <br/>
+                    Iván E. Ferreira <br/>
+                    UN-Bog Geología""",
+    unsafe_allow_html=True)
+foot3.markdown("""Mira más de mis proyectos <br/>
+                [Github](https://github.com/ieferreira) <br/>
+                [LinkedIn](https://www.linkedin.com/in/ieferreira/)""",
+    unsafe_allow_html=True)
