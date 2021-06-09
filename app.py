@@ -118,7 +118,7 @@ if file:
     img_cert = img.copy()
     imageLocation.image(img, use_column_width=True)
 
-    st.sidebar.title("Puntos y parámetros")
+    st.sidebar.markdown("""### Parámetros a usar""")
 
     test_name = st.sidebar.text_input("Nombre de prueba", "Nombre Nombre Apellido Apellido")
     # name_pt1 = st.sidebar.slider(
@@ -145,7 +145,7 @@ if file:
     font_selected = fonts_dict[option_font]
 
 
-    if st.sidebar.checkbox("Dibuja Puntos", value=False):
+    if st.sidebar.checkbox("Dibuja Certificado de Prueba", value=False):
         test_img = ImageDraw.Draw(img)
         make_test(size_img, img, test_img, test_name , ptn1=100,
                   ptn2=name_pt2, ptd1=dni_pt1, ptd2=dni_pt2, font=font_selected, name_size=name_size, dni_size=dni_size)
@@ -182,7 +182,7 @@ if file:
         if st.checkbox("Generar Certificados"):
 
             ls_mails, ls_names = generate_certs(size_img, img_cert,
-                                      (name_pt1, name_pt2), (dni_pt1, dni_pt2), df_filtered, font_selected, name_size, dni_size)
+                                      (100, name_pt2), (dni_pt1, dni_pt2), df_filtered, font_selected, name_size, dni_size)
             certs_generated = True
 
         if certs_generated:
