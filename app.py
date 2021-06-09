@@ -27,20 +27,16 @@ local_css("style.css")
 TITLE = "Aplicación Correos y Certificados"
 consolidado_generado = False
 
-head1, head2, head3 = st.beta_columns(3)
+head1, head2 = st.beta_columns((3,15))
 
 head1.markdown(
-    f'<img src="https://media.giphy.com/media/jIRyzncqRWzM3GYaQm/giphy.gif"  width="150" height="150" alt="cat gif">',
+    f'<img src="https://media.giphy.com/media/jIRyzncqRWzM3GYaQm/giphy.gif"  width="100" height="100" alt="cat gif">',
     unsafe_allow_html=True,
 )
 head2.title(TITLE.title())
-head3.markdown(
-    f'<img src="https://media.giphy.com/media/jIRyzncqRWzM3GYaQm/giphy.gif"  width="150" height="150" alt="cat gif">',
-    unsafe_allow_html=True,
-)
 
 st.text("")
-cert_name = st.text_input("¿Cuál es el nombre del certificado?", "Organizado")
+cert_name = st.text_input("¿Cuál es el nombre del certificado?", "🏆")
 
 st.write("""
     Formato aceptado en el excel (.xslx) es [ NOMBRE | DNI | CORREO ]. Si no lo tienes lo puedes generar a partir de las asistencias (.xlsx). ¿Deseas generar el reporte a partir de las asistencias y la inscripción?: """)
