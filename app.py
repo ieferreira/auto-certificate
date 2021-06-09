@@ -27,10 +27,19 @@ local_css("style.css")
 TITLE = "Aplicación Correos y Certificados"
 consolidado_generado = False
 
+head1, head2, head3 = st.beta_columns(3)
 
+head1.markdown(
+    f'<img src="https://media.giphy.com/media/jIRyzncqRWzM3GYaQm/giphy.gif"  width="150" height="150" alt="cat gif">',
+    unsafe_allow_html=True,
+)
+head2.title(TITLE.title())
+head3.markdown(
+    f'<img src="https://media.giphy.com/media/jIRyzncqRWzM3GYaQm/giphy.gif"  width="150" height="150" alt="cat gif">',
+    unsafe_allow_html=True,
+)
 
-st.title(TITLE.title())
-
+st.text("")
 cert_name = st.text_input("¿Cuál es el nombre del certificado?", "Organizado")
 
 st.write("""
