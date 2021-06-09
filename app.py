@@ -27,15 +27,35 @@ local_css("style.css")
 TITLE = "Aplicación Correos y Certificados"
 consolidado_generado = False
 
+
+
 st.title(TITLE.title())
 
+cert_name = st.text_input("¿Cuál es el nombre del certificado?", "Organizado")
+
 st.write("""
-    Formato aceptado en el excel es = NOMBRE, DNI, CORREO\n
-    ¿Deseas generar el reporte a partir de las asistencias y la inscripción?: """)
+    Formato aceptado en el excel (.xslx) es [ NOMBRE | DNI | CORREO ]. Si no lo tienes lo puedes generar a partir de las asistencias (.xlsx). ¿Deseas generar el reporte a partir de las asistencias y la inscripción?: """)
+
+
+
 
 if st.checkbox("Generar reporte de asistencia a partir de exceles", value=False):
-    exceles = st.file_uploader("Subir exceles para generar reporte", type=["xlsx"], accept_multiple_files=True)
-     
+
+    st.write("¿Cómo se llaman las columnas donde se encuentra el nombre y los apellidos, el DNI y el correo? (o usa los que se encuentran por defecto)")
+
+    col1, col2, col3 = st.beta_columns(3)
+
+    fullname_column = col1.text_input("Nombres y Apellidos", "Nombres y apellidos")
+    dni_column = col2.text_input("Columna DNI", "DNI (Cedula o T.I)")
+    mail_column = col3.text_input("Columna correo electrónico", "Dirección de correo electrónico")
+    
+    fullname_column = fullname_column.split(".")[0]
+    dni_column = dni_column.split(".")[0]
+    mail_column = mail_column.split(".")[0]
+
+
+    exceles = st.file_uploader("Subir exceles para generar reporte", type=["xlsx"], accept_multiple_files=True)   
+
     if exceles:
         for i in exceles:
 
@@ -48,9 +68,10 @@ if st.checkbox("Generar reporte de asistencia a partir de exceles", value=False)
 
                 df = df.groupby(groupby_field, axis=1,).apply(lambda x: x.apply(sjoin, axis=1))
 
-                df_final = df[["Nombres y apellidos", "DNI (Cedula o T", "Dirección de correo electrónico"]]
+                df_final = df[[fullname_column, dni_column, mail_column]]
                 df_final = df_final.rename(columns={'Nombres y apellidos': 'NOMBRES', 'DNI (Cedula o T': 'DNI', "Dirección de correo electrónico": "CORREO"})
                 df_final["ASIS"] = 0
+
         cnt = 0
         for i in exceles: 
 
@@ -95,19 +116,32 @@ if file:
 
     st.sidebar.title("Puntos y parámetros")
 
-    name_pt1 = st.sidebar.number_input(
-        "Punto Nombre (x)", 0, img.size[0], 285, step=1, key='name_pt1')
-    name_pt2 = st.sidebar.number_input(
+    name_pt1 = st.sidebar.slider(
+        "Punto Nombre (x)", 0, img.size[0], 325, step=1, key='name_pt1')
+    name_pt2 = st.sidebar.slider(
         "Punto Nombre (y)", 0, img.size[1], 325, step=1, key='name_pt2')
-    dni_pt1 = st.sidebar.number_input(
+    dni_pt1 = st.sidebar.slider(
         "Punto DNI (x)", 0, img.size[0], 740, step=1, key='dni_pt1')
-    dni_pt2 = st.sidebar.number_input(
+    dni_pt2 = st.sidebar.slider(
         "Punto DNI (y)", 0, img.size[1], 390, step=1, key='dni_pt2')
+
+    name_size = st.sidebar.slider(
+        "Tamaño Fuente Nombre", 0, 50, 28, step=1, key='name_fontsize')    
+    dni_size = st.sidebar.slider(
+        "Tamaño Fuente DNI", 0, 50, 20, step=1, key='dni_fontsize')
+
+    font_selected = "alegreya.ttf"
+    option_font = st.sidebar.selectbox("¿Qué fuente deseas usar?", ("Alegreya", "Computer Modern", "Comic Sans"))
+
+    fonts_dict = {"Alegreya": "alegreya.ttf", "Computer Modern": "cmunorm.ttf", "Comic Sans": "comicsans.ttf"}
+
+    font_selected = fonts_dict[option_font]
+
 
     if st.sidebar.checkbox("Dibuja Puntos", value=False):
         test_img = ImageDraw.Draw(img)
         make_test(img, test_img, ptn1=name_pt1,
-                  ptn2=name_pt2, ptd1=dni_pt1, ptd2=dni_pt2)
+                  ptn2=name_pt2, ptd1=dni_pt1, ptd2=dni_pt2, font=font_selected, name_size=name_size, dni_size=dni_size)
         img2 = import_image("responses/test.jpg")
         imageLocation.image(img2,  use_column_width=True)
 
@@ -125,10 +159,10 @@ if file:
         if consolidado_generado:            
 
             df_filtered = df_final[df_final['ASIS'] >= cnt]
-            print(df_filtered.dtypes)
+ 
             df_filtered = df_filtered.astype({"DNI": float})
             df_filtered = df_filtered.astype({"DNI": int})
-            print(df_filtered.dtypes)
+    
 
 
         else:
@@ -139,8 +173,9 @@ if file:
         st.table(df_filtered)
 
         if st.checkbox("Generar Certificados"):
-            ls_mails = generate_certs(img_cert,
-                                      (name_pt1, name_pt2), (dni_pt1, dni_pt2), df_filtered)
+
+            ls_mails, ls_names = generate_certs(img_cert,
+                                      (name_pt1, name_pt2), (dni_pt1, dni_pt2), df_filtered, font_selected, name_size, dni_size)
             certs_generated = True
 
         if certs_generated:
@@ -153,8 +188,8 @@ if file:
 
             if st.button("Enviar correos"):
 
-                subject = "Certificado SEG"
-                body = "Se te entrega el siguiente certificado"
+                subject = f"Certificado {cert_name}"
+
                 sender_email = user_input
                 receiver_email = ls_mails
                 password = pword
@@ -162,6 +197,7 @@ if file:
                 try:
                     for i in stqdm(range(len(receiver_email))):
                         # Create a multipart message and set headers
+                        body = f"Hola {ls_names[i]} Se te entrega el siguiente certificado por asistir al curso de {cert_name}. Felicitaciones"
                         message = MIMEMultipart()
                         message["From"] = sender_email
                         message["To"] = receiver_email[i]
@@ -172,8 +208,7 @@ if file:
                         message.attach(MIMEText(body, "plain"))
 
                         # In same directory as script
-                        filename = "certificados/" + \
-                            f"{ls_mails[i].split('@')[0]}-certificado.pdf"
+                        filename = "certificados/" + f"{ls_mails[i].split('@')[0]}-certificado.pdf"
 
                         # Open PDF file in binary mode
                         with open(filename, "rb") as attachment:
