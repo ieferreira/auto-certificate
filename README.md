@@ -23,12 +23,13 @@ Using streamlit as frontend, clone the repo and run it with the following comman
 Requirements are:
 
 ```bash
+streamlit
 numpy
 tqdm
+stqdm
 pandas
 openpyxl
 pillow==7.2.0
-streamlit==0.61.0
 ```
 
 Alternatively run for installing the dependencies:
