@@ -22,7 +22,7 @@ def make_cert(file, text: str, dni: str, fname: str, ptn1: int = 100, ptn2: int 
     dni_text = dni
     image_editable.text((ptn1, ptn2), name_text, (0, 0, 0), font=title_font)
     image_editable.text((ptd1, ptd2), dni_text, (0, 0, 0), font=dni_font)
-    file.save(folder+"/"+f"{fname}-certificado.pdf")
+    file.save(folder+"/"+f"{fname}-certificado.jpg")
 
 
 def make_test(file, image_editable, text: str = "TextoNombre PruebaNombre PruebaApellido Texto", dni: str = "100001000", ptn1: int = 100, ptn2: int = 100, ptd1: int = 100, ptd2: int = 200, folder="responses", font="/alegreya.ttf"):
@@ -50,8 +50,8 @@ def generate_certs(img_cert, coords1, coords2, df):
         ls_mail.append(df.iloc[i]["CORREO"])
 
     for i in range(len(ls_names)):
-        print("print making cert cert", str(ls_names[i]), str(
-            ls_dni[i]), str(ls_mail[i].split("@")[0]),)
+        # print("print making cert cert", str(ls_names[i]), str(
+        #     ls_dni[i]), str(ls_mail[i].split("@")[0]),)
         make_cert(img_cert, str(ls_names[i]), str(
             ls_dni[i]), str(ls_mail[i].split("@")[0]), coords1[0], coords1[1], coords2[0], coords2[1])
 

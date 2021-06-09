@@ -22,14 +22,60 @@ clean_folder("responses/*")
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
 local_css("style.css")
 
-
 TITLE = "Aplicación Correos y Certificados"
+consolidado_generado = False
 
 st.title(TITLE.title())
-file = st.file_uploader("", type=["jpg"])
+
+st.write("""
+    Formato aceptado en el excel es = NOMBRE, DNI, CORREO\n
+    ¿Deseas generar el reporte a partir de las asistencias y la inscripción?: """)
+
+if st.checkbox("Generar reporte de asistencia a partir de exceles", value=False):
+    exceles = st.file_uploader("Subir exceles para generar reporte", type=["xlsx"], accept_multiple_files=True)
+     
+    if exceles:
+        for i in exceles:
+
+             if i.name.endswith("inscripción.xlsx"):
+                df = pd.read_excel(i, engine='openpyxl')                
+                def sjoin(x): return ';'.join(x[x.notnull()].astype(str))
+                def groupby_field(col):
+                    parts = col.split('.')
+                    return '{}'.format(parts[0])
+
+                df = df.groupby(groupby_field, axis=1,).apply(lambda x: x.apply(sjoin, axis=1))
+
+                df_final = df[["Nombres y apellidos", "DNI (Cedula o T", "Dirección de correo electrónico"]]
+                df_final = df_final.rename(columns={'Nombres y apellidos': 'NOMBRES', 'DNI (Cedula o T': 'DNI', "Dirección de correo electrónico": "CORREO"})
+                df_final["ASIS"] = 0
+        cnt = 0
+        for i in exceles: 
+
+            
+            if not i.name.endswith("inscripción.xlsx"):                
+
+                def format_asistance(i):
+
+                    df_asis = pd.read_excel(i)
+                    df_asis = df_asis.rename(columns={'Nombre(s) y apellidos COMPLETOS.': "NOMBRES", "Dirección de correo electrónico": "CORREO"})
+                    return df_asis
+
+                df_asis = format_asistance(i)
+
+                df_final["ASIS"]+=df_final.CORREO.isin(df_asis.CORREO).astype(int)
+                cnt += 1
+                
+        st.write(f"¿Se encontraron {cnt} certificados de asistencia, cuantas asistencias mínimas deseas tomar para el consolidado?")
+
+        asis_pts = st.slider("Número de asistencia", 0, 2, cnt//2, step=1, key='asis_pts')
+        consolidado_generado = True
+
+
+
+file = st.file_uploader("Subir imagen plantilla para generar certificados", type=["jpg"])
 
 if file is None:
     st.text("Por favor, sube una imagen...")
@@ -71,16 +117,30 @@ if file:
     except:
         pass
 
-    file_asis = st.file_uploader(label="", type="xlsx")
+    
+    file_asis = st.file_uploader(label="Si ya generaste consolidado, este PASO no es necesario", type="xlsx")
 
-    if file_asis:
+    if file_asis or consolidado_generado == True:
 
-        df = pd.read_excel(file_asis, engine='openpyxl')
+        if consolidado_generado:            
+
+            df_filtered = df_final[df_final['ASIS'] >= cnt]
+            print(df_filtered.dtypes)
+            df_filtered = df_filtered.astype({"DNI": float})
+            df_filtered = df_filtered.astype({"DNI": int})
+            print(df_filtered.dtypes)
+
+
+        else:
+            df_filtered = pd.read_excel(file_asis, engine='openpyxl')
+
         certs_generated = False
-        st.table(df)
+
+        st.table(df_filtered)
+
         if st.checkbox("Generar Certificados"):
             ls_mails = generate_certs(img_cert,
-                                      (name_pt1, name_pt2), (dni_pt1, dni_pt2), df)
+                                      (name_pt1, name_pt2), (dni_pt1, dni_pt2), df_filtered)
             certs_generated = True
 
         if certs_generated:
@@ -143,6 +203,7 @@ if file:
                             server.sendmail(sender_email, receiver_email[i], text)
 
                     st.write(f"Correos enviados a {len(receiver_email)} personas")
+
                 except Exception as e:
 
                     st.write(
