@@ -42,9 +42,8 @@ st.write("""
     Formato aceptado en el excel (.xslx) es [ NOMBRE | DNI | CORREO ]. Si no lo tienes lo puedes generar a partir de las asistencias (.xlsx). ¿Deseas generar el reporte a partir de las asistencias y la inscripción?: """)
 
 
-
-
 if st.checkbox("Generar reporte de asistencia a partir de exceles", value=False):
+
 
     st.write("¿Cómo se llaman las columnas donde se encuentra el nombre y los apellidos, el DNI y el correo? (o usa los que se encuentran por defecto)")
 
@@ -121,14 +120,17 @@ if file:
 
     st.sidebar.title("Puntos y parámetros")
 
-    name_pt1 = st.sidebar.slider(
-        "Punto Nombre (x)", 0, img.size[0], 325, step=1, key='name_pt1')
+    test_name = st.sidebar.text_input("Nombre de prueba", "Nombre Nombre Apellido Apellido")
+    # name_pt1 = st.sidebar.slider(
+    #     "Punto Nombre (x)", 0, img.size[0], 325, step=1, key='name_pt1')
     name_pt2 = st.sidebar.slider(
-        "Punto Nombre (y)", 0, img.size[1], 325, step=1, key='name_pt2')
+        "Altura vertical (texto centrado)", 0, img.size[1], 325, step=1, key='name_pt2')
     dni_pt1 = st.sidebar.slider(
         "Punto DNI (x)", 0, img.size[0], 740, step=1, key='dni_pt1')
     dni_pt2 = st.sidebar.slider(
         "Punto DNI (y)", 0, img.size[1], 390, step=1, key='dni_pt2')
+
+    size_img = img.size
 
     name_size = st.sidebar.slider(
         "Tamaño Fuente Nombre", 0, 50, 28, step=1, key='name_fontsize')    
@@ -145,7 +147,7 @@ if file:
 
     if st.sidebar.checkbox("Dibuja Puntos", value=False):
         test_img = ImageDraw.Draw(img)
-        make_test(img, test_img, ptn1=name_pt1,
+        make_test(size_img, img, test_img, test_name , ptn1=100,
                   ptn2=name_pt2, ptd1=dni_pt1, ptd2=dni_pt2, font=font_selected, name_size=name_size, dni_size=dni_size)
         img2 = import_image("responses/test.jpg")
         imageLocation.image(img2,  use_column_width=True)
@@ -179,7 +181,7 @@ if file:
 
         if st.checkbox("Generar Certificados"):
 
-            ls_mails, ls_names = generate_certs(img_cert,
+            ls_mails, ls_names = generate_certs(size_img, img_cert,
                                       (name_pt1, name_pt2), (dni_pt1, dni_pt2), df_filtered, font_selected, name_size, dni_size)
             certs_generated = True
 
@@ -193,6 +195,7 @@ if file:
 
             if st.button("Enviar correos"):
 
+                st.write("Enviando Correos 🤹")    
                 subject = f"Certificado {cert_name}"
 
                 sender_email = user_input
@@ -202,7 +205,7 @@ if file:
                 try:
                     for i in stqdm(range(len(receiver_email))):
                         # Create a multipart message and set headers
-                        body = f"Hola {ls_names[i]} Se te entrega el siguiente certificado por asistir al curso de {cert_name}. Felicitaciones"
+                        body = f"Hola {ls_names[i]}, se te entrega el siguiente certificado por asistir al curso {cert_name}. Felicitaciones"
                         message = MIMEMultipart()
                         message["From"] = sender_email
                         message["To"] = receiver_email[i]
