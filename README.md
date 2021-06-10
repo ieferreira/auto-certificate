@@ -44,6 +44,10 @@ Clone the repo and run the following command:
 streamlit run app.py
 ```
 
+### To Do
+
+- Ver como mejorar la calidad del pdf generado (se acepta jpg y png más sin embargo la calidad es similar)
+
 ## Author
 
 Iván E. Ferreira - Unal Bogotá
