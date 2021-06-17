@@ -1,4 +1,4 @@
-from PIL import Image, ImageFont, ImageDraw, ImageOps
+from PIL import Image, ImageFont, ImageDraw, ImageOps, ImageColor
 import pandas as pd
 from tqdm import tqdm
 import numpy as np
@@ -137,6 +137,9 @@ if file:
     dni_size = st.sidebar.slider(
         "Tamaño Fuente DNI", 0, 50, 20, step=1, key='dni_fontsize')
 
+    color = st.sidebar.color_picker('Escoge un color para el texto', '#000000')
+    
+
     font_selected = "alegreya.ttf"
     option_font = st.sidebar.selectbox("¿Qué fuente deseas usar?", ("Alegreya", "Computer Modern", "Comic Sans"))
 
@@ -148,7 +151,7 @@ if file:
     if st.sidebar.checkbox("Dibuja Certificado de Prueba", value=False):
         test_img = ImageDraw.Draw(img)
         make_test(size_img, img, test_img, test_name , ptn1=100,
-                  ptn2=name_pt2, ptd1=dni_pt1, ptd2=dni_pt2, font=font_selected, name_size=name_size, dni_size=dni_size)
+                  ptn2=name_pt2, ptd1=dni_pt1, ptd2=dni_pt2, font=font_selected, name_size=name_size, dni_size=dni_size, color=color)
         img2 = import_image("responses/test.png")
         imageLocation.image(img2,  use_column_width=True)
 
@@ -182,7 +185,7 @@ if file:
         if st.checkbox("Generar Certificados"):
 
             ls_mails, ls_names = generate_certs(size_img, img_cert,
-                                      (100, name_pt2), (dni_pt1, dni_pt2), df_filtered, font_selected, name_size, dni_size)
+                                      (100, name_pt2), (dni_pt1, dni_pt2), df_filtered, font_selected, name_size, dni_size, color=color)
             certs_generated = True
 
         if certs_generated:
