@@ -7,8 +7,9 @@ import glob
 from stqdm import stqdm
 import streamlit as st
 
-@st.cache(suppress_st_warning=True)  
-def make_cert(size_img,file, text: str, dni: str, fname: str, ptn1: int = 100, ptn2: int = 100, ptd1: int = 100, ptd2: int = 200, font="alegreya.ttf", name_size=28, dni_size=20):
+
+
+def make_cert(size_img,file, text: str, dni: str, fname: str, ptn1: int = 100, ptn2: int = 100, ptd1: int = 100, ptd2: int = 200, font="alegreya.ttf", name_size=28, dni_size=20, color=(0,0,0)):
     file = file.copy()
     folder = "certificados"
     W, H= size_img
@@ -19,13 +20,14 @@ def make_cert(size_img,file, text: str, dni: str, fname: str, ptn1: int = 100, p
     dni_font = ImageFont.truetype(f"fonts/{font}", dni_size)
     name_text = text.title()
     dni_text = dni
-    image_editable.text(((W-w)/2,ptn2), name_text, (0, 0, 0), font=title_font)
-    image_editable.text((ptd1, ptd2), dni_text, (0, 0, 0), font=dni_font)
+    image_editable.text(((W-w)/2,ptn2), name_text, color, font=title_font)
+    image_editable.text((ptd1, ptd2), dni_text, color, font=dni_font)
     save_file = file.convert('RGB')
     save_file.save(folder+"/"+f"{fname}-certificado.pdf", resolution=100.0)
 
-@st.cache(suppress_st_warning=True)  
-def make_test(size_img, file, image_editable, text: str = "TextoNombre PruebaNombre PruebaApellido Texto", dni: str = "100001000", ptn1: int = 100, ptn2: int = 100, ptd1: int = 100, ptd2: int = 200, folder="responses", font="alegreya.ttf", name_size=28, dni_size=20):
+
+
+def make_test(size_img, file, image_editable, text: str = "TextoNombre PruebaNombre PruebaApellido Texto", dni: str = "100001000", ptn1: int = 100, ptn2: int = 100, ptd1: int = 100, ptd2: int = 200, folder="responses", font="alegreya.ttf", name_size=28, dni_size=20, color=(0,0,0)):
 
     W, H= size_img
     image_editable = ImageDraw.Draw(file)
@@ -35,13 +37,14 @@ def make_test(size_img, file, image_editable, text: str = "TextoNombre PruebaNom
     dni_font = ImageFont.truetype(f"fonts/{font}", dni_size)
     name_text = text.title()
     dni_text = dni
-    image_editable.text(((W-w)/2,ptn2), name_text, (0, 0, 0), font=title_font)
-    image_editable.text((ptd1, ptd2), dni_text, (0, 0, 0), font=dni_font)
+    image_editable.text(((W-w)/2,ptn2), name_text, color, font=title_font)
+    image_editable.text((ptd1, ptd2), dni_text, color, font=dni_font)
     file.save(folder+"/test.png")
 
 
-@st.cache(suppress_st_warning=True)  
-def generate_certs(size_img, img_cert, coords1, coords2, df, font, name_size, dni_size):
+
+
+def generate_certs(size_img, img_cert, coords1, coords2, df, font, name_size, dni_size, color=(0,0,0)):
 
     ls_names = []
     ls_dni = []
@@ -55,7 +58,7 @@ def generate_certs(size_img, img_cert, coords1, coords2, df, font, name_size, dn
 
     for i in range(len(ls_names)):
         make_cert(size_img, img_cert, str(ls_names[i]), str(
-            ls_dni[i]), str(ls_mails[i].split("@")[0]), coords1[0], coords1[1], coords2[0], coords2[1], font, name_size, dni_size)
+            ls_dni[i]), str(ls_mails[i].split("@")[0]), coords1[0], coords1[1], coords2[0], coords2[1], font, name_size, dni_size, color=color)
 
     return ls_mails, ls_names
 
