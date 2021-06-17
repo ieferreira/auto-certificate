@@ -6,9 +6,9 @@ It also sends emails automatically to the recipients of the certificate.
 
 ### Demo
 
-Short demo of how it works:
+For a demo of how it works, please visit
 
-<img src="demo_app.gif" width="750" height="350"/>
+[https://github.com/ieferreira/auto-certificate](https://github.com/ieferreira/auto-certificate)
 
 ### Heroku deployed app
 
