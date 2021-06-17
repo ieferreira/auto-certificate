@@ -4,6 +4,13 @@ An Automatic generator of certificates for my local university SEG Student Chapt
 
 It also sends emails automatically to the recipients of the certificate.
 
+### Branches
+
+```bash
+main -> branch for github repo
+master -> branch optimized for deployment in heroku
+```
+
 ### Demo
 
 Short demo of how it works:
