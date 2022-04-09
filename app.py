@@ -234,7 +234,7 @@ if file:
                         # Add header as key/value pair to attachment part
                         part.add_header(
                             "Content-Disposition",
-                            f"attachment; filename= {filename.split('/')}",
+                            f"attachment; filename= {filename.split('/')[-1]}",
                         )
 
                         # Add attachment to message and convert message to string
